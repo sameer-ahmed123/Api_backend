@@ -1,16 +1,19 @@
 from rest_framework import serializers
-from Api.models import Employees
+from App.models import Task
 
 
-class EmployeeSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
+class TaskSerializer(serializers.ModelSerializer):
+    state = serializers.SerializerMethodField()
+
+    def get_state(self, obj):
+        return obj.Retrive_state()
 
     class Meta:
-        model = Employees
+        model = Task
         fields = [
             'id',
-            'name',
-            'designation',
-            'salary',
-            'image',
+            'Task_title',
+            'Slug',
+            'Content',
+            'state',
         ]

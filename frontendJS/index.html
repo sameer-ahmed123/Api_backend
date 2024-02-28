@@ -10,67 +10,62 @@
 </head>
 
 <body>
-    <div style="height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;gap:15px;">
-        <div class="card" style="width: 18rem;">
-            <img id="emp_img" src="" class="card-img-top">
-            <div class="card-body">
-                <h5 id="emp_name" class="card-title"></h5>
-                <p id="emp_desig" class="card-text"></p>
-                <p id="emp_salary" class="card-text"></p>
-            </div>
-        </div>
 
-        <button id="lod_emp">load employee</button>
+    <button id="lod_task">load tsk</button>
 
-    </div>
 
     <div id="main_div"></div>
 
     </div>
-    <a href="">delete</a>
 
-    <button id="delete_employee">dlete</button>
+
+    <button id="delete_tsk">dlete</button>
 
     <script>
-        const dle_btn = document.getElementById("delete_employee")
-        let id = 8
-        let endp = `http://localhost:8000/api/delete/${id}/`
-        let options = {
-            method: 'DELETE', // The HTTP method to use
+        const dle_btns = document.querySelectorAll(".delete_tsk")
+
+        function handleButtonClick(event) {
+            const slug = event.target.getAttribute('value');
+            console.log(slug);
+            // You can use the slug value in your API request
+            // Add your API request logic here
         }
 
-        dle_btn.addEventListener("click", () => {
-            fetch(endp, options)
-                .then(response => {
-                    if (!response.ok) {
-                        console.log("could not delete the employee")
-                    }
-                    else {
-                        console.log(response.status)
-                        alert("deleted an employee")
-                        return response.json()
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        })
 
+        dle_btns.forEach(delButton => {
+            delButton.addEventListener("click", handleButtonClick)
+        })
+        /* let slug = "task-1"
+         const endp = `http://localhost:8000/api/task/${slug}/delete/`
+         let options = {
+             method: 'DELETE', // The HTTP method to use
+         }
+ 
+         dle_btn.addEventListener("click", () => {
+             fetch(endp, options)
+                 .then(response => {
+                     if (!response.ok) {
+                         console.log("could not delete the tsk")
+                     }
+                     else {
+                         console.log(response.status)
+                         alert("deleted  tsk")
+                         return response.json()
+                     }
+                 })
+                 .catch(error => {
+                     console.error('Error:', error);
+                 });
+         })
+ */
 
     </script>
 
     <script>
-        const endpoint = "http://localhost:8000/api/empl"
+        const endpoint = "http://localhost:8000/api/tasks"
 
-        const load_btn = document.getElementById("lod_emp")
-        /* const employee_name = document.getElementById("emp_name")
-          const employee_designation = document.getElementById("emp_desig")
-          const employee_image = document.getElementById("emp_img")
-          const employee_salary = document.getElementById("emp_salary")*/
+        const load_btn = document.getElementById("lod_task")
         const main_div = document.getElementById("main_div")
-
-
-
 
         load_btn.addEventListener("click", () => {
             fetch(endpoint)
@@ -82,61 +77,54 @@
                 })
                 .then(data => {
                     if (data && data.length > 0) {
-                        data.forEach(empl => {
-                            console.log(empl.id)
-                            console.log(empl.image)
-                            const created_card = document.createElement("div")
-                            created_card.classList.add("card")
-                            created_card.style = "height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;gap:15px;"
+                        data.forEach(tskl => {
+                            const Tcard = document.createElement("div")
+                            Tcard.classList.add("card")
+                            Tcard.style = "height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;gap:15px;"
 
+                            // Update content based on tasks
 
-                            var empIMG = document.createElement('img')
-                            // Update content based on employee data
-                            empIMG.src = empl.image;
-                            empIMG.classList.add("card-img-top")
-                            empIMG.style = "width:450px;height:350px"
+                            var tskNAME = document.createElement("p")
+                            tskNAME.innerText = tskl.Task_title;
+                            tskNAME.classList.add("card-title")
 
-                            var empNAME = document.createElement("p")
-                            empNAME.innerText = empl.name;
-                            empNAME.classList.add("card-title")
+                            var tskContent = document.createElement("p")
+                            tskContent.innerText = tskl.Content;
+                            tskContent.classList.add("card-text")
 
-                            var empDESG = document.createElement("p")
-                            empDESG.innerText = empl.designation;
-                            empDESG.classList.add("card-text")
+                            var tskslug = document.createElement("p")
+                            tskslug.innerText = tskl.Slug;
+                            tskslug.classList.add("card-text")
 
-                            var empSAL = document.createElement("p")
-                            empSAL.innerText = empl.salary;
-                            empSAL.classList.add("card-text")
+                            var tskDel = document.createElement("button")
+                            tskDel.value = tskl.Slug
+                            tskDel.innerText = "Delete Task!"
+                            tskDel.classList.add("delete_tsk")
+
 
                             var ddiv = document.createElement("div")
                             var div = document.createElement("div")
                             div.classList.add("bodcard-y")
-                            ddiv.appendChild(empIMG)
-                            ddiv.appendChild(empNAME)
-                            ddiv.appendChild(empDESG)
-                            ddiv.appendChild(empSAL)
 
-
-                            var empImg = created_card.querySelector(".emp_img");
-                            var empName = created_card.querySelector(".emp_name");
-                            var empDesig = created_card.querySelector(".emp_desig");
-                            var empSalary = created_card.querySelector(".emp_salary");
+                            ddiv.appendChild(tskNAME)
+                            ddiv.appendChild(tskContent)
+                            ddiv.appendChild(tskslug)
+                            ddiv.appendChild(tskDel)
 
 
 
-                            created_card.appendChild(ddiv)
-                            main_div.appendChild(created_card)
+                            var tskName = Tcard.querySelector(".tsk_name");
+                            var tskslug = Tcard.querySelector(".tsk_slug");
+
+
+
+                            Tcard.appendChild(ddiv)
+                            main_div.appendChild(Tcard)
 
 
 
 
                         })
-
-                        /*    console.log(data);
-                            employee_name.innerText = data.name
-                            employee_designation.innerText = data.designation
-                            employee_image.src = data.image
-                            employee_salary.innerText = data.salary*/
                     }
                     else {
                         console.log("....")
@@ -145,8 +133,6 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
-
-
         })
 
 
@@ -156,7 +142,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-
 
 
 </body>
