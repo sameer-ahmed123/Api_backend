@@ -1,1 +1,1 @@
-web: guinicorn ImpliedDRF.wsgi
+web: gunicorn ImpliedDRF.wsgi
