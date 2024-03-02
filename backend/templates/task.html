@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+
+<body>
+    <div class="wrapper">
+        {% if task %}
+        <div class="task_container">
+            <div class="task">
+                <h3 class="task_title">{{task.Task_title}}</h3>
+                <p>{{task.Slug}}</p>
+                <textarea name="" id="" cols="30" rows="5" class="Content">{{task.Content}}</textarea>
+                <p>{{task.status}}</p>
+            </div>
+        </div>
+        <div style="display: flex;justify-content:space-evenly;gap:5px;align-items:center;height:50px;width:350px">
+            <a href="{% url 'update' task.Slug %}">Edit</a>
+            <a href="{% url 'delete' task.Slug %}">Delete</a>
+        </div>
+        {% else %}
+
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="edit" name="" id="">
+        </form>
+
+        {% endif %}
+    </div>
+</body>
+
+</html>
