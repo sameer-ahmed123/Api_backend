@@ -22,7 +22,7 @@
             <a href="{% url 'update' task.Slug %}">Edit</a>
             <a href="{% url 'delete' task.Slug %}">Delete</a>
         </div>
-        {% else %}
+        {% elif form %}
 
         <form action="" method="post">
             {% csrf_token %}
@@ -30,6 +30,8 @@
             <input type="submit" value="edit" name="" id="">
         </form>
 
+        {% else %}
+        <p>Task Not Found</p>
         {% endif %}
     </div>
 </body>
